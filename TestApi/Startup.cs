@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using TestApi.DataLayer;
 using TestApi.Options;
+using AutoMapper;
 
 
 
@@ -34,6 +35,9 @@ namespace TestApi
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+
+            services.AddAutoMapper(c => c.AddProfile<AutoMappingProfile>(), typeof(Startup));
+            DIConfig.InitialInjection(services);
 
             services.AddControllers();
 

@@ -136,5 +136,7 @@ D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Work
 D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Debug.dll
+D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\AutoMapper.dll
+D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 D:\dotnet\TestApi\TestApi\obj\Debug\netcoreapp3.1\TestApi.MvcApplicationPartsAssemblyInfo.cs
 D:\dotnet\TestApi\TestApi\obj\Debug\netcoreapp3.1\TestApi.MvcApplicationPartsAssemblyInfo.cache
