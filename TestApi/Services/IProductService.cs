@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TestApi.DTOs;
 
 namespace TestApi.Services
 {
     public interface IProductService
     {
-        ProductDTO AddProd(ProductDTO newProd);
-        void DeleteProd(int productId);
-        IEnumerable<ProductDTO> GetAllProds();
-        ProductDTO GetProdById(int productId);
-        ProductDTO UpdateProd(int productId, ProductDTO productDTO);
+        Task<ProductDTO> AddProd(ProductDTO newProd);
+        Task<bool> DeleteProd(int productId);
+        Task<IEnumerable<ProductDTO>> GetAllProds();
+        Task<ProductDTO> GetProdById(int productId);
+        Task<ProductDTO> UpdateProd(int productId, ProductDTO productDTO);
     }
 }

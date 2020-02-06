@@ -32,12 +32,10 @@ namespace TestApi
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+            services.RegisterInjections();
+            services.CreateDbContext(Configuration);
 
             services.AddAutoMapper(c => c.AddProfile<AutoMappingProfile>(), typeof(Startup));
-            DIConfig.InitialInjection(services);
 
             services.AddControllers();
 

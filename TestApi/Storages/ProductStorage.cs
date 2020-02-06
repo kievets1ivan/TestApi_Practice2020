@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,38 +17,35 @@ namespace TestApi.Storages
             _dbContext = dbContext;
         }
 
-        public IEnumerable<ProductEntity> GetAll() => _dbContext.ProductSet.ToList();
+        public async Task<IEnumerable<ProductEntity>> GetAllAsync() => await _dbContext.ProductSet.ToListAsync();
 
-        public ProductEntity GetById(int productId) => _dbContext.ProductSet.SingleOrDefault(x => x.Id == productId);
+        public async Task<ProductEntity> GetByIdAsync(int productId) => await _dbContext.ProductSet.SingleOrDefaultAsync(x => x.Id == productId);
 
-        public ProductEntity Add(ProductEntity product)
+        public async Task<ProductEntity> AddAsync(ProductEntity product)
         {
-            _dbContext.ProductSet.Add(product);
-            _dbContext.SaveChanges();
-            return GetById(product.Id);
+            await _dbContext.ProductSet.AddAsync(product);
+            await _dbContext.SaveChangesAsync();
+            return await GetByIdAsync(product.Id);
         }
 
-        public void Delete(int productId)
+        public async Task<bool> DeleteAsync(int productId)
         {
-
-            var productToDelete = GetById(productId);//замапить dto to entity внутри, будет ли виден айди?
-
+            var productToDelete = await GetByIdAsync(productId);
 
             if (productToDelete != null)
             {
                 _dbContext.ProductSet.Remove(productToDelete);
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
+                return true;
             }
-
+            return false;
         }
 
-        public ProductEntity Update(ProductEntity newProduct)
+        public async Task<ProductEntity> UpdateAsync(ProductEntity newProduct)
         {
-
             _dbContext.ProductSet.Update(newProduct);
-            _dbContext.SaveChanges();
-            return GetById(newProduct.Id);
-
+            await _dbContext.SaveChangesAsync();
+            return await GetByIdAsync(newProduct.Id);
         }
     }
 }

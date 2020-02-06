@@ -10,7 +10,7 @@ namespace TestApi
 {
     public static class DIConfig
     {
-        public static void InitialInjection(IServiceCollection services)
+        public static void RegisterInjections(this IServiceCollection services)
         {
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IProductStorage, ProductStorage>();

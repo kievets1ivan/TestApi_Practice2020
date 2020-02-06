@@ -20,46 +20,20 @@ namespace TestApi.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<ProductDTO> GetAllProds()
-        {
+        public async Task<IEnumerable<ProductDTO>> GetAllProds() => _mapper.Map<ProductDTO[]>(await _productStorage.GetAllAsync());
 
-            return _mapper.Map<ProductDTO[]>(_productStorage.GetAll());//замапить entity to dto
+        public async Task<ProductDTO> GetProdById(int productId) => _mapper.Map<ProductDTO>(await _productStorage.GetByIdAsync(productId));
 
-        }
+        public async Task<ProductDTO> AddProd(ProductDTO newProd) => _mapper.Map<ProductDTO>(await _productStorage.AddAsync(_mapper.Map<ProductEntity>(newProd)));
 
-        public ProductDTO GetProdById(int productId)
-        {
-                
-            return _mapper.Map<ProductDTO>(_productStorage.GetById(productId));
+        public async Task<bool> DeleteProd(int productId) => await _productStorage.DeleteAsync(productId);
 
-        }
-
-        public ProductDTO AddProd(ProductDTO newProd)
-        {
-
-
-            return _mapper.Map<ProductDTO>(_productStorage.Add(_mapper.Map<ProductEntity>(newProd)));
-
-
-            //замапить entity to dto снаружи
-            //замапить dto to entity внутри
-        }
-
-        public void DeleteProd(int productId)
-        {
-
-            _productStorage.Delete(productId);
-
-        }
-
-        public ProductDTO UpdateProd(int productId, ProductDTO productDTO)
+        public async Task<ProductDTO> UpdateProd(int productId, ProductDTO productDTO)
         {
             var newProduct = _mapper.Map<ProductEntity>(productDTO);
             newProduct.Id = productId;
 
-
-            return _mapper.Map<ProductDTO>(_productStorage.Update(newProduct));
-
+            return _mapper.Map<ProductDTO>(await _productStorage.UpdateAsync(newProduct));
         }
     }
 }
