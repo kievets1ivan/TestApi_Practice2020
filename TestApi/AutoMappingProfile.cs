@@ -12,8 +12,9 @@ namespace TestApi
     {
         public AutoMappingProfile()
         {
-            CreateMap<ProductEntity, ProductDTO>();
-            CreateMap<ProductDTO, ProductEntity>();
+            CreateMap<ProductEntity, ProductDTO>().ReverseMap();
+            CreateMap<UserEntity, UserDTO>()
+                .ForMember(dest => dest.Login, opts => opts.MapFrom(src => src.UserLogin)).ReverseMap();
         }
     }
 }

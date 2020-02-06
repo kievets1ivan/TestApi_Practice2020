@@ -28,7 +28,7 @@ namespace TestApi.Storages
             return await GetByIdAsync(product.Id);
         }
 
-        public async Task<bool> DeleteAsync(int productId)
+        public async Task DeleteAsync(int productId)
         {
             var productToDelete = await GetByIdAsync(productId);
 
@@ -36,9 +36,7 @@ namespace TestApi.Storages
             {
                 _dbContext.ProductSet.Remove(productToDelete);
                 await _dbContext.SaveChangesAsync();
-                return true;
             }
-            return false;
         }
 
         public async Task<ProductEntity> UpdateAsync(ProductEntity newProduct)

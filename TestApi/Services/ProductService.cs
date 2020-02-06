@@ -20,13 +20,13 @@ namespace TestApi.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ProductDTO>> GetAllProds() => _mapper.Map<ProductDTO[]>(await _productStorage.GetAllAsync());
+        public async Task<IEnumerable<ProductDTO>> GetAllProds() => _mapper.Map<IEnumerable<ProductDTO>>(await _productStorage.GetAllAsync());
 
         public async Task<ProductDTO> GetProdById(int productId) => _mapper.Map<ProductDTO>(await _productStorage.GetByIdAsync(productId));
 
         public async Task<ProductDTO> AddProd(ProductDTO newProd) => _mapper.Map<ProductDTO>(await _productStorage.AddAsync(_mapper.Map<ProductEntity>(newProd)));
 
-        public async Task<bool> DeleteProd(int productId) => await _productStorage.DeleteAsync(productId);
+        public async Task DeleteProd(int productId) => await _productStorage.DeleteAsync(productId);
 
         public async Task<ProductDTO> UpdateProd(int productId, ProductDTO productDTO)
         {

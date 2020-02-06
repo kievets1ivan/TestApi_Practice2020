@@ -8,7 +8,7 @@ using TestApi.Entities;
 
 namespace TestApi.DataLayer
 {
-    public class AppDbContext : IdentityDbContext
+    public class AppDbContext : IdentityDbContext<UserEntity>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)

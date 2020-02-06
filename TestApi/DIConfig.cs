@@ -14,6 +14,7 @@ namespace TestApi
         {
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IProductStorage, ProductStorage>();
+            services.AddTransient<IUserService, UserService>();
         }
     }
 }

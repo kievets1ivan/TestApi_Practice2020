@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TestApi.DataLayer;
+using TestApi.Entities;
 
 namespace TestApi
 {
@@ -15,6 +16,9 @@ namespace TestApi
         {
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDefaultIdentity<UserEntity>()
+                .AddEntityFrameworkStores<AppDbContext>();
         }
     }
 }

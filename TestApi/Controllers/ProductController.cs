@@ -16,7 +16,6 @@ namespace TestApi.Controllers
     {
         private readonly IProductService _productService;
 
-
         public ProductController(IProductService productService)
         {
             _productService = productService;
@@ -36,6 +35,10 @@ namespace TestApi.Controllers
         public async Task<IActionResult> Update([FromRoute] int productId, [FromBody] ProductDTO productDTO) => Ok(await _productService.UpdateProd(productId, productDTO));
 
         [HttpDelete("{productId}")]
-        public async Task<IActionResult> DeleteById(int productId) => Ok(await _productService.DeleteProd(productId));
+        public async Task<IActionResult> DeleteById(int productId)
+        {
+            await _productService.DeleteProd(productId);
+            return NoContent();
+        }
     }
 }
