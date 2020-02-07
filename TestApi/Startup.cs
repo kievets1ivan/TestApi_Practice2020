@@ -39,6 +39,7 @@ namespace TestApi
             services.RegisterInjections();
             services.CreateDbContext(Configuration);
             services.RegisterJwt(Configuration);
+            services.AddCors();
 
 
             services.AddAutoMapper(c => c.AddProfile<AutoMappingProfile>(), typeof(Startup));
@@ -75,6 +76,7 @@ namespace TestApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder => builder.WithOrigins("https://localhost:5001"));
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
