@@ -36,7 +36,7 @@ namespace TestApi.Controllers
                 return BadRequest(authResponse.ErrorMessage);
             }
 
-            return Ok(authResponse.Token);
+            return Ok();
         }
 
         [HttpPost("/login")]
@@ -50,7 +50,7 @@ namespace TestApi.Controllers
                 return BadRequest(authResponse.ErrorMessage);
             }
 
-            return Ok(authResponse.Token);
+            return Ok(authResponse);
         }
     }
 }
