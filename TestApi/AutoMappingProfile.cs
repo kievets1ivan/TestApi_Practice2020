@@ -14,7 +14,14 @@ namespace TestApi
         {
             CreateMap<ProductEntity, ProductDTO>().ReverseMap();
             CreateMap<UserEntity, UserDTO>()
-                .ForMember(dest => dest.Login, opts => opts.MapFrom(src => src.UserLogin)).ReverseMap();
+                .ForMember(dest => dest.Login, opts => opts.MapFrom(src => src.UserLogin))
+                .ForMember(dest => dest.Login, opts => opts.MapFrom(src => src.UserName)).ReverseMap();
+
+            CreateMap<UserEntity, UserAuth>()
+                .ForMember(dest => dest.Login, opts => opts.MapFrom(src => src.UserLogin))
+                .ForMember(dest => dest.Login, opts => opts.MapFrom(src => src.UserName)).ReverseMap();
+
+
         }
     }
 }

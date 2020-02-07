@@ -33,7 +33,32 @@ namespace TestApi.Services
             _jwtSettings = jwtSettings;
         }
 
-        public async Task<IEnumerable<UserDTO>> GetAllAsync() => _mapper.Map<IEnumerable<UserDTO>>(await _userManager.Users.ToListAsync());
+        public async Task<AuthResult> SignInAsync(UserAuth user)
+        {
+
+            var  userForSignIn = await _userManager.FindByNameAsync(user.Login);
+
+            if (userForSignIn != null)
+            {
+                if (await _userManager.CheckPasswordAsync(userForSignIn, user.Password))
+                {
+                    return GenerateJwtToken(userForSignIn);
+                }
+
+                return new AuthResult
+                {
+                    Success = false,
+                    ErrorMessage = "Your password is invalid"
+                };
+            }
+
+            return new AuthResult
+            {
+                Success = false,
+                ErrorMessage = "User with this login dosen't exist"
+            };
+        }
+
 
         public async Task<AuthResult> RegisterAsync(UserDTO userDTO)
         {
@@ -41,7 +66,6 @@ namespace TestApi.Services
 
             if (existingUser.Any())
             {
-                //в кастомный результат поставить Sucsess - false + можно ерор дописать 
                 return new AuthResult
                 {
                     Success = false,
@@ -51,13 +75,10 @@ namespace TestApi.Services
 
             var newUser = _mapper.Map<UserEntity>(userDTO);
 
-            newUser.UserName = newUser.UserLogin;
-
             var result = await _userManager.CreateAsync(newUser, userDTO.Password);
 
             if (!result.Succeeded)
             {
-                //в кастомный результат поставить Sucsess - false + можно ерор дописать(smth went wrong) 
                 return new AuthResult
                 {
                     Success = false,
@@ -81,7 +102,7 @@ namespace TestApi.Services
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim("id", user.Id.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(5),//lifetime
+                Expires = DateTime.UtcNow.AddMinutes(1),//lifetime
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

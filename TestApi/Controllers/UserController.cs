@@ -25,21 +25,6 @@ namespace TestApi.Controllers
         }
     
 
-        // GET: api/User
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            return Ok(await _userService.GetAllAsync());
-        }
-
-        // GET: api/User/5
-        /*[HttpGet("{id}")]
-        public async Task<IActionResult> Get([FromRoute] int userId)
-        {
-            return Ok();
-        }*/
-
-        // POST: api/User
         [HttpPost("/register")]
         public async Task<IActionResult> RegisterUser([FromBody] UserDTO newUser)
         {
@@ -54,32 +39,18 @@ namespace TestApi.Controllers
             return Ok(authResponse.Token);
         }
 
-        
-
-
-        // PUT: api/User/5
-       /* [HttpPut("{id}")]
-        public IActionResult Update([FromRoute] int userId, [FromBody] UserEntity user)
-        {
-
-            return Ok();
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete([FromRoute] int userId)
-        {
-            return Ok();
-        }*/
-
         [HttpPost("/login")]
-        public IActionResult AuthUser([FromBody] UserAuth user)//возвращаем токен
+        public async Task<IActionResult> SignIn([FromBody] UserAuth user)
         {
-            return Ok();
-            //проверка логина и пароля в базе данных
 
-            //если юзер существует, то генерим и возвращаем токен
-            //если нет, то просим зарегестрироваться
+            var authResponse = await _userService.SignInAsync(user);
+
+            if (!authResponse.Success)
+            {
+                return BadRequest(authResponse.ErrorMessage);
+            }
+
+            return Ok(authResponse.Token);
         }
     }
 }

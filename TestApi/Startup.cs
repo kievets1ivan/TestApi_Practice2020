@@ -38,36 +38,7 @@ namespace TestApi
 
             services.RegisterInjections();
             services.CreateDbContext(Configuration);
-
-
-            //configure jwtSettings
-            var jwtSettings = new JwtSettings();
-            Configuration.Bind(nameof(jwtSettings), jwtSettings);
-            services.AddSingleton(jwtSettings);
-
-            services.AddScoped<IUserService, UserService>();
-
-
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    RequireExpirationTime = false,
-                    ValidateLifetime = true
-                };
-            });
-
+            services.RegisterJwt(Configuration);
 
 
             services.AddAutoMapper(c => c.AddProfile<AutoMappingProfile>(), typeof(Startup));
@@ -77,10 +48,7 @@ namespace TestApi
             services.AddSwaggerGen(x =>
             {
                 x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "App API with auth" });
-
-
                 
-
                 x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization header using the bearer scheme",
@@ -96,9 +64,6 @@ namespace TestApi
                         Type = ReferenceType.SecurityScheme
                     }}, new List<string>()}
                 });
-
-
-
             });
         }
 
@@ -114,6 +79,7 @@ namespace TestApi
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
+            app.UseAuthorization();
 
 
             var swaggerOptions = new TestApi.Options.SwaggerOptions();
