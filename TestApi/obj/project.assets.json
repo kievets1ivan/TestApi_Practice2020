@@ -2989,6 +2989,42 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "TestApi.BL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "AutoMapper": "9.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.1",
+          "TestApi.DAL": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/TestApi.BL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/TestApi.BL.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
+      "TestApi.DAL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "AutoMapper": "9.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.1",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.1"
+        },
+        "compile": {
+          "bin/placeholder/TestApi.DAL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/TestApi.DAL.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },
@@ -9406,6 +9442,16 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
+    },
+    "TestApi.BL/1.0.0": {
+      "type": "project",
+      "path": "../TestApi.BL/TestApi.BL.csproj",
+      "msbuildProject": "../TestApi.BL/TestApi.BL.csproj"
+    },
+    "TestApi.DAL/1.0.0": {
+      "type": "project",
+      "path": "../TestApi.DAL/TestApi.DAL.csproj",
+      "msbuildProject": "../TestApi.DAL/TestApi.DAL.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -9422,7 +9468,8 @@
       "Microsoft.Extensions.Logging.Debug >= 3.1.1",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 3.1.1",
       "Swashbuckle.AspNetCore >= 5.0.0",
-      "Swashbuckle.AspNetCore.Swagger >= 5.0.0"
+      "Swashbuckle.AspNetCore.Swagger >= 5.0.0",
+      "TestApi.BL >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -9450,7 +9497,11 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\dotnet\\TestApi\\TestApi.BL\\TestApi.BL.csproj": {
+              "projectPath": "D:\\dotnet\\TestApi\\TestApi.BL\\TestApi.BL.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TestApi.DTOs;
-using TestApi.Entities;
-using TestApi.Services;
+using TestApi.BL.DTOs;
+using TestApi.BL.Services.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace TestApi.Controllers
 {
@@ -32,10 +28,30 @@ namespace TestApi.Controllers
         public async Task<IActionResult> Get([FromRoute] int productId) => Ok(await _productService.GetProdById(productId));
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ProductDTO newProductDTO) => Ok(await _productService.AddProd(newProductDTO));
+        public async Task<IActionResult> Create([FromBody] ProductDTO newProductDTO)
+        {
+            var response = await _productService.AddProd(newProductDTO);
+
+            if(response == null)
+            {
+                return BadRequest(new ValidationResult($"Product {newProductDTO.Name} is already exist."));
+            }
+
+            return Ok(response);
+        }
 
         [HttpPut("{productId}")]
-        public async Task<IActionResult> Update([FromRoute] int productId, [FromBody] ProductDTO productDTO) => Ok(await _productService.UpdateProd(productId, productDTO));
+        public async Task<IActionResult> Update([FromRoute] int productId, [FromBody] ProductDTO productDTO)
+        {
+            var response = await _productService.UpdateProd(productId, productDTO);
+
+            if (response == null)
+            {
+                return BadRequest(new ValidationResult($"Product {productDTO.Name} is already exist."));
+            }
+
+            return Ok(response);
+        }
 
         [HttpDelete("{productId}")]
         public async Task<IActionResult> DeleteById(int productId)

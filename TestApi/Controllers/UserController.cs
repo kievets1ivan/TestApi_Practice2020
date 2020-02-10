@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using TestApi.DataLayer;
-using TestApi.DTOs;
-using TestApi.Entities;
-using TestApi.Services;
+using TestApi.BL.DTOs;
+using TestApi.BL.Services.Interfaces;
+using TestApi.DAL.Entities;
 
 namespace TestApi.Controllers
 {
@@ -33,7 +27,7 @@ namespace TestApi.Controllers
 
             if (!authResponse.Success)
             {
-                return BadRequest(authResponse.ErrorMessage);
+                return BadRequest(authResponse);
             }
 
             return Ok();
@@ -47,7 +41,7 @@ namespace TestApi.Controllers
 
             if (!authResponse.Success)
             {
-                return BadRequest(authResponse.ErrorMessage);
+                return BadRequest(authResponse);
             }
 
             return Ok(authResponse);

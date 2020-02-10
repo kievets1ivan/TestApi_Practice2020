@@ -167,3 +167,7 @@ D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens
 D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
 D:\dotnet\TestApi\TestApi\obj\Debug\netcoreapp3.1\TestApi.MvcApplicationPartsAssemblyInfo.cs
 D:\dotnet\TestApi\TestApi\obj\Debug\netcoreapp3.1\TestApi.MvcApplicationPartsAssemblyInfo.cache
+D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\TestApi.BL.dll
+D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\TestApi.DAL.dll
+D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\TestApi.BL.pdb
+D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\TestApi.DAL.pdb

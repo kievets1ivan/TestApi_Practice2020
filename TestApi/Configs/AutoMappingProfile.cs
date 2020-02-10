@@ -1,0 +1,23 @@
+﻿using AutoMapper;
+using TestApi.BL.DTOs;
+using TestApi.DAL.Entities;
+
+namespace TestApi
+{
+    public class AutoMappingProfile : Profile
+    {
+        public AutoMappingProfile()
+        {
+            CreateMap<ProductEntity, ProductDTO>().ReverseMap();
+            CreateMap<UserEntity, UserDTO>()
+                .ForMember(dest => dest.Login, opts => opts.MapFrom(src => src.UserLogin))
+                .ForMember(dest => dest.Login, opts => opts.MapFrom(src => src.UserName)).ReverseMap();
+
+            CreateMap<UserEntity, UserAuth>()
+                .ForMember(dest => dest.Login, opts => opts.MapFrom(src => src.UserLogin))
+                .ForMember(dest => dest.Login, opts => opts.MapFrom(src => src.UserName)).ReverseMap();
+
+
+        }
+    }
+}

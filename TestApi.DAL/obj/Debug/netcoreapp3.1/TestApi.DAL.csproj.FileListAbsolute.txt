@@ -1,0 +1,8 @@
+D:\dotnet\TestApi\TestApi.DAL\bin\Debug\netcoreapp3.1\TestApi.DAL.deps.json
+D:\dotnet\TestApi\TestApi.DAL\bin\Debug\netcoreapp3.1\TestApi.DAL.dll
+D:\dotnet\TestApi\TestApi.DAL\obj\Debug\netcoreapp3.1\TestApi.DAL.csprojAssemblyReference.cache
+D:\dotnet\TestApi\TestApi.DAL\obj\Debug\netcoreapp3.1\TestApi.DAL.AssemblyInfoInputs.cache
+D:\dotnet\TestApi\TestApi.DAL\obj\Debug\netcoreapp3.1\TestApi.DAL.AssemblyInfo.cs
+D:\dotnet\TestApi\TestApi.DAL\bin\Debug\netcoreapp3.1\TestApi.DAL.pdb
+D:\dotnet\TestApi\TestApi.DAL\obj\Debug\netcoreapp3.1\TestApi.DAL.dll
+D:\dotnet\TestApi\TestApi.DAL\obj\Debug\netcoreapp3.1\TestApi.DAL.pdb

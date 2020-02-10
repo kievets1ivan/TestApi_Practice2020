@@ -23,5 +23,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TestApi.BL\TestApi.BL.csproj" />
+  </ItemGroup>
+
 
 </Project>
