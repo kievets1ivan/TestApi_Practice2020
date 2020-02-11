@@ -6,10 +6,10 @@ namespace TestApi.BL.Services.Interfaces
 {
     public interface IProductService
     {
-        Task<ProductDTO> AddProd(ProductDTO newProd);
+        Task<ProductOutcomeDTO> AddProd(ProductDTO newProd);
         Task DeleteProd(int productId);
-        Task<IEnumerable<ProductDTO>> GetAllProds();
-        Task<ProductDTO> GetProdById(int productId);
-        Task<ProductDTO> UpdateProd(int productId, ProductDTO productDTO);
+        Task<IEnumerable<ProductOutcomeDTO>> GetAllProds();
+        Task<ProductOutcomeDTO> GetProdById(int productId);
+        Task<ProductOutcomeDTO> UpdateProd(int productId, ProductDTO productDTO);
     }
 }

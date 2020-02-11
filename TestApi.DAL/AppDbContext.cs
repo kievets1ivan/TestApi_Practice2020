@@ -13,5 +13,6 @@ namespace TestApi.DAL
         }
 
         public DbSet<ProductEntity> ProductSet { get; set; }
+        public DbSet<TransactionEntity> TransactionSet { get; set; }
     }
 }

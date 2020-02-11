@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using TestApi.DAL.Entities;
 
-namespace TestApi.DAL.Storages
+namespace TestApi.DAL.Storages.Interfaces
 {
     public interface IProductStorage
     {

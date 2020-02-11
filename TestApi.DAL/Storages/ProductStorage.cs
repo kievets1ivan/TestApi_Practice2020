@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TestApi.DAL.Entities;
+using TestApi.DAL.Storages.Interfaces;
 
 namespace TestApi.DAL.Storages
 {

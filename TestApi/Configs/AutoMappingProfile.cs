@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using System;
 using TestApi.BL.DTOs;
 using TestApi.DAL.Entities;
+using TestApi.DAL.Enums;
 
 namespace TestApi
 {
@@ -9,6 +11,8 @@ namespace TestApi
         public AutoMappingProfile()
         {
             CreateMap<ProductEntity, ProductDTO>().ReverseMap();
+            CreateMap<ProductEntity, ProductOutcomeDTO>().ReverseMap();
+
             CreateMap<UserEntity, UserDTO>()
                 .ForMember(dest => dest.Login, opts => opts.MapFrom(src => src.UserLogin))
                 .ForMember(dest => dest.Login, opts => opts.MapFrom(src => src.UserName)).ReverseMap();
@@ -18,6 +22,8 @@ namespace TestApi
                 .ForMember(dest => dest.Login, opts => opts.MapFrom(src => src.UserName)).ReverseMap();
 
 
+            CreateMap<TransactionEntity, TransactionDTO>().ReverseMap();
+            CreateMap<TransactionEntity, TransactionOutcomeDTO>().ReverseMap();
         }
     }
 }

@@ -31,7 +31,9 @@ namespace TestApi
 
             services.AddAutoMapper(c => c.AddProfile<AutoMappingProfile>(), typeof(Startup));
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
 
             services.AddSwaggerGen(x =>
             {

@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using TestApi.BL.Services;
 using TestApi.BL.Services.Interfaces;
 using TestApi.DAL.Storages;
+using TestApi.DAL.Storages.Interfaces;
 
 namespace TestApi
 {
@@ -11,7 +13,11 @@ namespace TestApi
         {
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IProductStorage, ProductStorage>();
+            services.AddTransient<IProductTransactionService, ProductTransactionService>();
+            services.AddTransient<IProductTransactionStorage, ProductTransactionStorage>();
             services.AddScoped<IUserService, UserService>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
     }
 }
