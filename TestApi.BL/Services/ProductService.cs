@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TestApi.BL.DTOs;
+using TestApi.BL.Exceptions;
 using TestApi.BL.Services.Interfaces;
 using TestApi.DAL.Entities;
 using TestApi.DAL.Enums;
@@ -21,22 +22,22 @@ namespace TestApi.BL.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ProductOutcomeDTO>> GetAllProds() => _mapper.Map<IEnumerable<ProductOutcomeDTO>>(await _productStorage.GetAllAsync());
+        public async Task<IEnumerable<ProductOutcomeDTO>> GetAll() => _mapper.Map<IEnumerable<ProductOutcomeDTO>>(await _productStorage.GetAllAsync());
 
-        public async Task<ProductOutcomeDTO> GetProdById(int productId) => _mapper.Map<ProductOutcomeDTO>(await _productStorage.GetByIdAsync(productId));
+        public async Task<ProductOutcomeDTO> Get(int productId) => _mapper.Map<ProductOutcomeDTO>(await _productStorage.GetByIdAsync(productId));
 
-        public async Task<ProductOutcomeDTO> AddProd(ProductDTO newProd) {
+        public async Task<ProductOutcomeDTO> Add(ProductDTO newProd) {
 
             if(await _productStorage.GetByNameAsync(newProd.Name) != null)
             {
-                return null;
+                throw new AppValidationException($"Product {newProd.Name} is already exist!");
             }
 
             return _mapper.Map<ProductOutcomeDTO>(await _productStorage.AddAsync(_mapper.Map<ProductEntity>(newProd)));
         }
 
 
-        public async Task DeleteProd(int productId) => await _productStorage.DeleteAsync(productId);
+        public async Task Delete(int productId) => await _productStorage.DeleteAsync(productId);
 
         public async Task<ProductOutcomeDTO> UpdateProd(int productId, ProductDTO productDTO)
         {

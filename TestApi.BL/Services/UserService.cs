@@ -11,22 +11,24 @@ using TestApi.BL.DTOs;
 using TestApi.BL.Models;
 using TestApi.BL.Services.Interfaces;
 using TestApi.DAL.Entities;
+using TestApi.DAL.Storages.Interfaces;
 
 namespace TestApi.BL.Services
 {
     public class UserService : IUserService
     {
 
-        private readonly UserManager<UserEntity> _userManager;
-        private readonly JwtSettings _jwtSettings;
+        //private readonly UserManager<UserEntity> _userManager;
+        private readonly IUserStorage _userStorage;
         private readonly IMapper _mapper;
+        private readonly JwtSettings _jwtSettings;
 
 
-        public UserService(UserManager<UserEntity> userManager,
-            IMapper mapper,
-            JwtSettings jwtSettings)
+        public UserService(IUserStorage userStorage,
+                            IMapper mapper,
+                            JwtSettings jwtSettings)
         {
-            _userManager = userManager;
+            _userStorage = userStorage;
             _mapper = mapper;
             _jwtSettings = jwtSettings;
         }
@@ -34,11 +36,11 @@ namespace TestApi.BL.Services
         public async Task<AuthResult> SignInAsync(UserAuth user)
         {
 
-            var  userForSignIn = await _userManager.FindByNameAsync(user.Login);
+            var userForSignIn = await _userStorage.FindByName(user.Login);
 
             if (userForSignIn != null)
             {
-                if (await _userManager.CheckPasswordAsync(userForSignIn, user.Password))
+                if (await _userStorage.CheckPassword(userForSignIn, user.Password))
                 {
                     return GenerateJwtToken(userForSignIn);
                 }
@@ -60,9 +62,11 @@ namespace TestApi.BL.Services
 
         public async Task<AuthResult> RegisterAsync(UserDTO userDTO)
         {
-            var existingUser = _userManager.Users.Where(x => x.UserLogin == userDTO.Login);
+            //var existingUser = _userManager.Users.Where(x => x.UserLogin == userDTO.Login);
+            var existingUser = await _userStorage.FindByName(userDTO.Login);
 
-            if (existingUser.Any())
+
+            if (existingUser != null)
             {
                 return new AuthResult
                 {
@@ -73,9 +77,9 @@ namespace TestApi.BL.Services
 
             var newUser = _mapper.Map<UserEntity>(userDTO);
 
-            var result = await _userManager.CreateAsync(newUser, userDTO.Password);
+            var createdUser = await _userStorage.Create(newUser, userDTO.Password);
 
-            if (!result.Succeeded)
+            if (!createdUser.Succeeded)
             {
                 return new AuthResult
                 {
@@ -84,7 +88,10 @@ namespace TestApi.BL.Services
                 };
             }
 
-            return GenerateJwtToken(newUser);
+            return new AuthResult
+            {
+                Success = true,
+            };
         }
 
         private AuthResult GenerateJwtToken(UserEntity user)

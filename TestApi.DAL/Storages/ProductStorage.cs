@@ -46,7 +46,7 @@ namespace TestApi.DAL.Storages
 
         public async Task<ProductEntity> GetByNameAsync(string productName) => await _dbContext.ProductSet.SingleOrDefaultAsync(x => x.Name == productName);
 
-        public int GetQuantityById(int productId) => _dbContext.ProductSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id == productId).Result.Quantity;
+        public int GetQuantityById(int productId) => _dbContext.ProductSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id == productId).Result.Quantity;//question
 
     }
 }

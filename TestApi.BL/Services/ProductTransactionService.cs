@@ -4,9 +4,12 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using TestApi.BL.DTOs;
+using TestApi.BL.Exceptions;
 using TestApi.BL.Services.Interfaces;
 using TestApi.DAL.Entities;
 using TestApi.DAL.Enums;
@@ -19,22 +22,19 @@ namespace TestApi.BL.Services
         private readonly IProductStorage _productStorage;
         private readonly IProductTransactionStorage _productTransactionStorage;
         private readonly IMapper _mapper;
-        private readonly UserManager<UserEntity> _userManager;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUserStorage _userStorage;
 
 
 
         public ProductTransactionService(IProductStorage productStorage,
                                          IProductTransactionStorage productTransactionStorage,
                                          IMapper mapper,
-                                         UserManager<UserEntity> userManager,
-                                         IHttpContextAccessor httpContextAccessor)
+                                         IUserStorage userStorage)
         {
             _productStorage = productStorage;
             _productTransactionStorage = productTransactionStorage;
             _mapper = mapper;
-            _userManager = userManager;
-            _httpContextAccessor = httpContextAccessor;
+            _userStorage = userStorage;
         }
 
         public IEnumerable<TransactionOutcomeDTO> GetTransactions(int productId)
@@ -48,16 +48,13 @@ namespace TestApi.BL.Services
             var product = await _productStorage.GetByIdAsync(productId);
 
 
-            if (product.Quantity < transactionDTO.Quantity && transactionDTO.Operation == TypeOperation.Expense)
-            {
-                return null;
-            }
+            Check(product.Quantity, transactionDTO);
 
             var transaction = _mapper.Map<TransactionEntity>(transactionDTO);
             transaction.Date = DateTime.Now;
             transaction.ProductId = productId;
-            transaction.UserId = new Guid(_userManager.Users.SingleOrDefault(x => x.UserName == _userManager.GetUserId(_httpContextAccessor.HttpContext.User)).Id);
-            transaction.User = _userManager.Users.SingleOrDefault(x => x.Id == transaction.UserId.ToString());
+            transaction.UserId = _userStorage.GetCurrentUserId();
+            transaction.User = _userStorage.GetUserById(transaction.UserId.ToString());
 
             await _productTransactionStorage.CreateTransactionAsync(transaction);
 
@@ -74,6 +71,15 @@ namespace TestApi.BL.Services
 
             await _productStorage.UpdateAsync(product);
             return GetTransactions(product.Id);
+
+        }
+
+        private void Check(int productQuantity, TransactionDTO transactionDTO)
+        {
+            if (productQuantity < transactionDTO.Quantity && transactionDTO.Operation == TypeOperation.Expense)
+            {
+                throw new AppValidationException($"Transaction quantity ({transactionDTO.Quantity}) can't be more product quantity ({productQuantity}) in case expense!");
+            }
         }
     }
 }

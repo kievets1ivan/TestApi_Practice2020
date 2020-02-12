@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using TestApi.BL.DTOs;
 using TestApi.BL.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using TestApi.BL.Exceptions;
+using System;
 
 namespace TestApi.Controllers
 {
@@ -22,22 +24,26 @@ namespace TestApi.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(await _productService.GetAllProds());
+        public async Task<IActionResult> GetAll() => Ok(await _productService.GetAll());
 
         [HttpGet("{productId}")]
-        public async Task<IActionResult> Get([FromRoute] int productId) => Ok(await _productService.GetProdById(productId));
+        public async Task<IActionResult> Get([FromRoute] int productId) => Ok(await _productService.Get(productId));
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ProductDTO newProductDTO)
         {
-            var response = await _productService.AddProd(newProductDTO);
-
-            if(response == null)
+            try
             {
-                return BadRequest(new ValidationResult($"Product {newProductDTO.Name} is already exist."));
+                return Ok(await _productService.Add(newProductDTO));
             }
-
-            return Ok(response);
+            catch (AppValidationException exception)
+            {
+                return BadRequest(exception.Message);
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
         }
 
         [HttpPut("{productId}")]
@@ -45,15 +51,13 @@ namespace TestApi.Controllers
         {
             var response = await _productService.UpdateProd(productId, productDTO);
 
-            
-
             return Ok(response);
         }
 
         [HttpDelete("{productId}")]
-        public async Task<IActionResult> DeleteById(int productId)
+        public async Task<IActionResult> Delete(int productId)
         {
-            await _productService.DeleteProd(productId);
+            await _productService.Delete(productId);
             return NoContent();
         }
     }
