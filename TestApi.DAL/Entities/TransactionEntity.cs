@@ -14,6 +14,6 @@ namespace TestApi.DAL.Entities
         public int Quantity { get; set; }
         public DateTime Date { get; set; }
         public ProductEntity Product { get; set; }
-        public string UserName { get; set; }
+        public UserEntity User { get; set; }
     }
 }

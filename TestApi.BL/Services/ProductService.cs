@@ -41,13 +41,10 @@ namespace TestApi.BL.Services
         public async Task<ProductOutcomeDTO> UpdateProd(int productId, ProductDTO productDTO)
         {
 
-            if (await _productStorage.GetByNameAsync(productDTO.Name) != null)
-            {
-                return null;
-            }
-
             var newProduct = _mapper.Map<ProductEntity>(productDTO);
+
             newProduct.Id = productId;
+            newProduct.Quantity = _productStorage.GetQuantityById(newProduct.Id);
 
             return _mapper.Map<ProductOutcomeDTO>(await _productStorage.UpdateAsync(newProduct));
         }

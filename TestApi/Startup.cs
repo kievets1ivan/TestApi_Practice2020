@@ -65,7 +65,9 @@ namespace TestApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(builder => builder.WithOrigins("https://localhost:5001"));
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200")
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod());
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();

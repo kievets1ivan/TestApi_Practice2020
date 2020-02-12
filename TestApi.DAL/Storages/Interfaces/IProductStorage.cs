@@ -14,5 +14,6 @@ namespace TestApi.DAL.Storages.Interfaces
         Task<ProductEntity> GetByIdAsync(int productId);
         Task<ProductEntity> UpdateAsync(ProductEntity newProduct);
         Task<ProductEntity> GetByNameAsync(string productName);
+        int GetQuantityById(int productId);
     }
 }

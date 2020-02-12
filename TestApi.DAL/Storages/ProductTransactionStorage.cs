@@ -20,7 +20,9 @@ namespace TestApi.DAL.Storages
 
         public IEnumerable<TransactionEntity> GetTransactions(int productId)
         {
-            return _dbContext.TransactionSet.Include(x => x.Product).Where(x => x.ProductId == productId).ToList();
+            return _dbContext.TransactionSet.Include(x => x.Product)
+                                            .Include(x => x.User)
+                                            .Where(x => x.ProductId == productId).ToList();
         }
 
         public async Task CreateTransactionAsync(TransactionEntity transaction)

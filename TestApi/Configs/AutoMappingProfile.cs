@@ -23,7 +23,8 @@ namespace TestApi
 
 
             CreateMap<TransactionEntity, TransactionDTO>().ReverseMap();
-            CreateMap<TransactionEntity, TransactionOutcomeDTO>().ReverseMap();
+            CreateMap<TransactionEntity, TransactionOutcomeDTO>()
+                .ForMember(dest => dest.UserName, opts => opts.MapFrom(src => src.User.UserName)).ReverseMap();
         }
     }
 }

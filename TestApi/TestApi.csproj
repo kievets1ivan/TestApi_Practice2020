@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200212090021_init.cs" />
+    <Compile Remove="Migrations\20200212090021_init.Designer.cs" />
+    <Compile Remove="Migrations\20200212090702_init.cs" />
+    <Compile Remove="Migrations\20200212090702_init.Designer.cs" />
+    <Compile Remove="Migrations\20200212092531_transaction.cs" />
+    <Compile Remove="Migrations\20200212092531_transaction.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.1" />

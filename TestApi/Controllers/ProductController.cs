@@ -45,10 +45,7 @@ namespace TestApi.Controllers
         {
             var response = await _productService.UpdateProd(productId, productDTO);
 
-            if (response == null)
-            {
-                return BadRequest(new ValidationResult($"Product {productDTO.Name} is already exist."));
-            }
+            
 
             return Ok(response);
         }

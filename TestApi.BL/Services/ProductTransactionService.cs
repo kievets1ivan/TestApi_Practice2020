@@ -45,32 +45,35 @@ namespace TestApi.BL.Services
 
         public async Task<IEnumerable<TransactionOutcomeDTO>> CreateTransactionAsync(int productId, TransactionDTO transactionDTO)
         {
+            var product = await _productStorage.GetByIdAsync(productId);
+
+
+            if (product.Quantity < transactionDTO.Quantity && transactionDTO.Operation == TypeOperation.Expense)
+            {
+                return null;
+            }
 
             var transaction = _mapper.Map<TransactionEntity>(transactionDTO);
             transaction.Date = DateTime.Now;
-            transaction.UserId = new Guid(_userManager.Users.SingleOrDefault(x => x.UserName == _userManager.GetUserId(_httpContextAccessor.HttpContext.User)).Id);
-            transaction.UserName = _userManager.Users.SingleOrDefault(x => x.Id == transaction.UserId.ToString()).UserName;
             transaction.ProductId = productId;
-            transaction.Product = await _productStorage.GetByIdAsync(productId);
+            transaction.UserId = new Guid(_userManager.Users.SingleOrDefault(x => x.UserName == _userManager.GetUserId(_httpContextAccessor.HttpContext.User)).Id);
+            transaction.User = _userManager.Users.SingleOrDefault(x => x.Id == transaction.UserId.ToString());
 
             await _productTransactionStorage.CreateTransactionAsync(transaction);
-
-            var product = await _productStorage.GetByIdAsync(productId);
 
             switch (transactionDTO.Operation)
             {
                 case TypeOperation.Recepits:
-                    product.Quantity += transactionDTO.Quantity;
+                    product.Quantity += transaction.Quantity;
                     break;
 
                 case TypeOperation.Expense:
-                    product.Quantity -= transactionDTO.Quantity;
+                    product.Quantity -= transaction.Quantity;
                     break;
             }
 
             await _productStorage.UpdateAsync(product);
             return GetTransactions(product.Id);
-
         }
     }
 }
