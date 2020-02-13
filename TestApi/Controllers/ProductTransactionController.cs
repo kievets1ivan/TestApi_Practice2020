@@ -40,11 +40,7 @@ namespace TestApi.Controllers
         {
             try
             {   
-                return Ok(await _productTransactionService.CreateTransactionAsync(productId, transactionDTO));
-            }
-            catch(AppValidationException exception)
-            {
-                return BadRequest(exception.Message);
+                return Ok(await _productTransactionService.CreateTransaction(productId, transactionDTO));
             }
             catch (Exception exception)
             {

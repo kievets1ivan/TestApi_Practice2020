@@ -20,10 +20,10 @@ namespace TestApi.Controllers
     
 
         [HttpPost("/register")]
-        public async Task<IActionResult> RegisterUser([FromBody] UserDTO newUser)
+        public async Task<IActionResult> Register([FromBody] UserDTO newUser)
         {
 
-            var authResponse = await _userService.RegisterAsync(newUser);
+            var authResponse = await _userService.Register(newUser);
 
             if (!authResponse.Success)
             {
@@ -37,7 +37,7 @@ namespace TestApi.Controllers
         public async Task<IActionResult> SignIn([FromBody] UserAuth user)
         {
 
-            var authResponse = await _userService.SignInAsync(user);
+            var authResponse = await _userService.SignIn(user);
 
             if (!authResponse.Success)
             {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TestApi.BL.DTOs;
+using TestApi.DAL.Entities;
 
 namespace TestApi.BL.Services.Interfaces
 {
@@ -10,6 +11,7 @@ namespace TestApi.BL.Services.Interfaces
         Task Delete(int productId);
         Task<IEnumerable<ProductOutcomeDTO>> GetAll();
         Task<ProductOutcomeDTO> Get(int productId);
-        Task<ProductOutcomeDTO> UpdateProd(int productId, ProductDTO productDTO);
+        Task<ProductOutcomeDTO> Update(int productId, ProductDTO productDTO);
+        SearchResponse GetLazy(SearchRequest request);
     }
 }

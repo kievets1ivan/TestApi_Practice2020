@@ -8,6 +8,7 @@ namespace TestApi.BL.DTOs
 {
     public class TransactionDTO
     {
+        [Required(ErrorMessage = "Fill in field 'Operation', please", AllowEmptyStrings = false)]
         public TypeOperation Operation { get; set; }
 
         [Required(ErrorMessage = "Fill in field 'Quantity', please", AllowEmptyStrings = false)]

@@ -18,7 +18,6 @@ namespace TestApi.BL.Services
     public class UserService : IUserService
     {
 
-        //private readonly UserManager<UserEntity> _userManager;
         private readonly IUserStorage _userStorage;
         private readonly IMapper _mapper;
         private readonly JwtSettings _jwtSettings;
@@ -33,7 +32,7 @@ namespace TestApi.BL.Services
             _jwtSettings = jwtSettings;
         }
 
-        public async Task<AuthResult> SignInAsync(UserAuth user)
+        public async Task<AuthResult> SignIn(UserAuth user)
         {
 
             var userForSignIn = await _userStorage.FindByName(user.Login);
@@ -60,11 +59,10 @@ namespace TestApi.BL.Services
         }
 
 
-        public async Task<AuthResult> RegisterAsync(UserDTO userDTO)
+        public async Task<AuthResult> Register(UserDTO userDTO)
         {
             //var existingUser = _userManager.Users.Where(x => x.UserLogin == userDTO.Login);
             var existingUser = await _userStorage.FindByName(userDTO.Login);
-
 
             if (existingUser != null)
             {
@@ -107,7 +105,7 @@ namespace TestApi.BL.Services
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim("id", user.Id.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(1),//lifetime
+                Expires = DateTime.UtcNow.AddMinutes(30),//lifetime
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

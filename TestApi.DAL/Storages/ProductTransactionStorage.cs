@@ -25,7 +25,7 @@ namespace TestApi.DAL.Storages
                                             .Where(x => x.ProductId == productId).ToList();
         }
 
-        public async Task CreateTransactionAsync(TransactionEntity transaction)
+        public async Task AddTransaction(TransactionEntity transaction)
         {
             _dbContext.TransactionSet.Add(transaction);
             await _dbContext.SaveChangesAsync();

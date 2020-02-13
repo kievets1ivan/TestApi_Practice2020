@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using TestApi.BL.DTOs;
 using TestApi.BL.Services.Interfaces;
-using System.ComponentModel.DataAnnotations;
 using TestApi.BL.Exceptions;
 using System;
+using TestApi.DAL.Entities;
 
 namespace TestApi.Controllers
 {
@@ -49,16 +49,28 @@ namespace TestApi.Controllers
         [HttpPut("{productId}")]
         public async Task<IActionResult> Update([FromRoute] int productId, [FromBody] ProductDTO productDTO)
         {
-            var response = await _productService.UpdateProd(productId, productDTO);
-
-            return Ok(response);
+            try
+            {
+                return Ok(await _productService.Update(productId, productDTO));
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
         }
 
         [HttpDelete("{productId}")]
-        public async Task<IActionResult> Delete(int productId)
+        public async Task<IActionResult> Delete([FromRoute] int productId)
         {
             await _productService.Delete(productId);
             return NoContent();
+        }
+
+        [HttpPost("lazy")]
+        public IActionResult GetLazy([FromBody] SearchRequest request)
+        {
+
+            return Ok(_productService.GetLazy(request));
         }
     }
 }

@@ -8,7 +8,7 @@ namespace TestApi.DAL.Storages.Interfaces
 {
     public interface IProductTransactionStorage
     {
-        Task CreateTransactionAsync(TransactionEntity transaction);
+        Task AddTransaction(TransactionEntity transaction);
         IEnumerable<TransactionEntity> GetTransactions(int productId);
     }
 }

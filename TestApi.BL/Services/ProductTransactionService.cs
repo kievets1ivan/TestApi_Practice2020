@@ -1,12 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using TestApi.BL.DTOs;
 using TestApi.BL.Exceptions;
@@ -23,8 +17,6 @@ namespace TestApi.BL.Services
         private readonly IProductTransactionStorage _productTransactionStorage;
         private readonly IMapper _mapper;
         private readonly IUserStorage _userStorage;
-
-
 
         public ProductTransactionService(IProductStorage productStorage,
                                          IProductTransactionStorage productTransactionStorage,
@@ -43,22 +35,44 @@ namespace TestApi.BL.Services
         }
 
 
-        public async Task<IEnumerable<TransactionOutcomeDTO>> CreateTransactionAsync(int productId, TransactionDTO transactionDTO)
+        public async Task<IEnumerable<TransactionOutcomeDTO>> CreateTransaction(int productId, TransactionDTO transactionDTO)
         {
-            var product = await _productStorage.GetByIdAsync(productId);
+            var product = await _productStorage.GetById(productId);
 
+            ValidateTransaction(product.Quantity, transactionDTO);
 
-            Check(product.Quantity, transactionDTO);
+            var transaction = BuildUpTransaction(productId, transactionDTO);
 
-            var transaction = _mapper.Map<TransactionEntity>(transactionDTO);
+            await _productTransactionStorage.AddTransaction(transaction);
+
+            await ChangeProductQuantityByTransaction(product, transaction);
+            
+            return GetTransactions(product.Id);
+        }
+
+        private void ValidateTransaction(int productQuantity, TransactionDTO transactionDTO)
+        {
+            if (productQuantity < transactionDTO.Quantity 
+                && transactionDTO.Operation == TypeOperation.Expense)
+            {
+                throw new AppValidationException($"Transaction quantity ({transactionDTO.Quantity}) can't be more product quantity ({productQuantity}) in case expense!");
+            }
+        }
+
+        private TransactionEntity BuildUpTransaction(int productId, TransactionDTO transactionDTO)
+        {
+            var transaction = _mapper.Map<TransactionEntity>(transactionDTO);//through action
             transaction.Date = DateTime.Now;
             transaction.ProductId = productId;
             transaction.UserId = _userStorage.GetCurrentUserId();
             transaction.User = _userStorage.GetUserById(transaction.UserId.ToString());
 
-            await _productTransactionStorage.CreateTransactionAsync(transaction);
+            return transaction;
+        }
 
-            switch (transactionDTO.Operation)
+        private async Task ChangeProductQuantityByTransaction(ProductEntity product, TransactionEntity transaction)
+        {
+            switch (transaction.Operation)
             {
                 case TypeOperation.Recepits:
                     product.Quantity += transaction.Quantity;
@@ -69,17 +83,7 @@ namespace TestApi.BL.Services
                     break;
             }
 
-            await _productStorage.UpdateAsync(product);
-            return GetTransactions(product.Id);
-
-        }
-
-        private void Check(int productQuantity, TransactionDTO transactionDTO)
-        {
-            if (productQuantity < transactionDTO.Quantity && transactionDTO.Operation == TypeOperation.Expense)
-            {
-                throw new AppValidationException($"Transaction quantity ({transactionDTO.Quantity}) can't be more product quantity ({productQuantity}) in case expense!");
-            }
+            await _productStorage.Update(product);
         }
     }
 }

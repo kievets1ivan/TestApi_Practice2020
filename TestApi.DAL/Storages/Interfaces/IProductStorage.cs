@@ -8,12 +8,14 @@ namespace TestApi.DAL.Storages.Interfaces
 {
     public interface IProductStorage
     {
-        Task<ProductEntity> AddAsync(ProductEntity product);
-        Task DeleteAsync(int productId);
-        Task<IEnumerable<ProductEntity>> GetAllAsync();
-        Task<ProductEntity> GetByIdAsync(int productId);
-        Task<ProductEntity> UpdateAsync(ProductEntity newProduct);
-        Task<ProductEntity> GetByNameAsync(string productName);
+        Task<ProductEntity> Add(ProductEntity product);
+        Task Delete(int productId);
+        Task<IEnumerable<ProductEntity>> GetAll();
+        Task<ProductEntity> GetById(int productId);
+        Task<ProductEntity> Update(ProductEntity newProduct);
+        Task<ProductEntity> GetByName(string productName);
         int GetQuantityById(int productId);
+        Task<bool> IsValidName(ProductEntity product);
+        SearchResponse GetLazy(SearchRequest request);
     }
 }

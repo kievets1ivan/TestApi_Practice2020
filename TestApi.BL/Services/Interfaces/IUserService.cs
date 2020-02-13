@@ -6,7 +6,7 @@ namespace TestApi.BL.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<AuthResult> RegisterAsync(UserDTO userDTO);
-        Task<AuthResult> SignInAsync(UserAuth user);
+        Task<AuthResult> Register(UserDTO userDTO);
+        Task<AuthResult> SignIn(UserAuth user);
     }
 }

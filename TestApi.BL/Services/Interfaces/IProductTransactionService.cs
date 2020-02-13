@@ -8,7 +8,7 @@ namespace TestApi.BL.Services.Interfaces
 {
     public interface IProductTransactionService
     {
-        Task<IEnumerable<TransactionOutcomeDTO>> CreateTransactionAsync(int productId, TransactionDTO transactionDTO);
+        Task<IEnumerable<TransactionOutcomeDTO>> CreateTransaction(int productId, TransactionDTO transactionDTO);
         IEnumerable<TransactionOutcomeDTO> GetTransactions(int productId);
     }
 }
