@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TestApi.BL.DTOs;
 using TestApi.BL.Exceptions;
 using TestApi.BL.Services.Interfaces;
 using TestApi.DAL.Entities;
+using TestApi.DAL.Enums;
 using TestApi.DAL.Storages.Interfaces;
 
 namespace TestApi.BL.Services
@@ -50,9 +52,40 @@ namespace TestApi.BL.Services
             return _mapper.Map<ProductOutcomeDTO>(await _productStorage.Update(updatedProduct));
         }
 
-        public SearchResponse GetLazy(SearchRequest request)
+        public SearchResponseDTO GetLazy(SearchRequestDTO request)
         {
-            return _productStorage.GetLazy(request);
+            var response = new SearchResponseDTO();
+
+            response.TotalCount = _productStorage.Count();
+
+            switch (request.SortBy)
+            {
+                case SortByColumn.NameASC:
+                case SortByColumn.NameDESC:
+                    response.Products = _mapper.Map<IEnumerable<ProductOutcomeDTO>>(
+                                        _productStorage.Sort(request.SortBy, x => x.Name)
+                                                       .Skip(request.Page * request.PerPage)
+                                                       .Take(request.PerPage));
+                    break;
+
+                case SortByColumn.PriceASC:
+                case SortByColumn.PriceDESC:
+                    response.Products = _mapper.Map<IEnumerable<ProductOutcomeDTO>>(
+                                        _productStorage.Sort(request.SortBy, x => x.Price)
+                                                       .Skip(request.Page * request.PerPage)
+                                                       .Take(request.PerPage));
+                    break;
+
+                case SortByColumn.QuantityASC:
+                case SortByColumn.QuantityDESC:
+                    response.Products = _mapper.Map<IEnumerable<ProductOutcomeDTO>>(
+                                        _productStorage.Sort(request.SortBy, x => x.Quantity)
+                                                       .Skip(request.Page * request.PerPage)
+                                                       .Take(request.PerPage));
+                    break;
+            }
+
+            return response;
         }
 
     }

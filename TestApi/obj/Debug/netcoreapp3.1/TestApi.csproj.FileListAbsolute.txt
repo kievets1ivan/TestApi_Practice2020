@@ -172,5 +172,8 @@ D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\TestApi.DAL.pdb
 D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
 D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
+D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\dotnet\TestApi\TestApi\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 D:\dotnet\TestApi\TestApi\obj\Debug\netcoreapp3.1\TestApi.MvcApplicationPartsAssemblyInfo.cs
 D:\dotnet\TestApi\TestApi\obj\Debug\netcoreapp3.1\TestApi.MvcApplicationPartsAssemblyInfo.cache

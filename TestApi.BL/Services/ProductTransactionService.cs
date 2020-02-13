@@ -17,16 +17,20 @@ namespace TestApi.BL.Services
         private readonly IProductTransactionStorage _productTransactionStorage;
         private readonly IMapper _mapper;
         private readonly IUserStorage _userStorage;
+        private readonly IDbTransactionService _transactionService;
+
 
         public ProductTransactionService(IProductStorage productStorage,
                                          IProductTransactionStorage productTransactionStorage,
                                          IMapper mapper,
-                                         IUserStorage userStorage)
+                                         IUserStorage userStorage,
+                                         IDbTransactionService transactionService)
         {
             _productStorage = productStorage;
             _productTransactionStorage = productTransactionStorage;
             _mapper = mapper;
             _userStorage = userStorage;
+            _transactionService = transactionService;
         }
 
         public IEnumerable<TransactionOutcomeDTO> GetTransactions(int productId)
@@ -43,9 +47,26 @@ namespace TestApi.BL.Services
 
             var transaction = BuildUpTransaction(productId, transactionDTO);
 
-            await _productTransactionStorage.AddTransaction(transaction);
 
-            await ChangeProductQuantityByTransaction(product, transaction);
+            _transactionService.BeginTransaction();
+            try
+            {
+                await _productTransactionStorage.AddTransaction(transaction);
+
+                await ChangeProductQuantityByTransaction(product, transaction);
+
+                _transactionService.Commit();
+
+            }catch(Exception)
+            {
+                _transactionService.RollBack();
+                throw;
+            }
+            finally
+            {
+                _transactionService.Dispose();
+            }
+
             
             return GetTransactions(product.Id);
         }

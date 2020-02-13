@@ -12,6 +12,6 @@ namespace TestApi.BL.Services.Interfaces
         Task<IEnumerable<ProductOutcomeDTO>> GetAll();
         Task<ProductOutcomeDTO> Get(int productId);
         Task<ProductOutcomeDTO> Update(int productId, ProductDTO productDTO);
-        SearchResponse GetLazy(SearchRequest request);
+        SearchResponseDTO GetLazy(SearchRequestDTO request);
     }
 }

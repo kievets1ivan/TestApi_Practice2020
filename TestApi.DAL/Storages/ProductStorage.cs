@@ -47,51 +47,17 @@ namespace TestApi.DAL.Storages
             return await GetById(newProduct.Id);
         }
 
-        public SearchResponse GetLazy(SearchRequest request)
+        public int Count() => _dbContext.ProductSet.Count();
+
+        public IOrderedEnumerable<ProductEntity> Sort(SortByColumn sortBy, Func<ProductEntity, object> sort)
         {
-            var response = new SearchResponse();
-
-            response.TotalCount = _dbContext.ProductSet.Count();
-
-            switch (request.SortBy)
+            if ((int)sortBy % 2 == 0)
             {
-                case SortByColumn.NameASC:
-                case SortByColumn.NameDESC:
-                    response.Products = SearchByRequest(_dbContext.ProductSet.ToList(), request, x => x.Name);                         
-                    break;
-
-                case SortByColumn.PriceASC:
-                case SortByColumn.PriceDESC:
-                    response.Products = SearchByRequest(_dbContext.ProductSet.ToList(), request, x => x.Price);
-                    break;
-
-                case SortByColumn.QuantityASC:
-                case SortByColumn.QuantityDESC:
-                    response.Products = SearchByRequest(_dbContext.ProductSet.ToList(), request, x => x.Quantity);
-                    break;
+                return _dbContext.ProductSet.OrderBy(sort);
             }
 
-            return response;
+            return _dbContext.ProductSet.OrderByDescending(sort);
         }
-
-        private IEnumerable<ProductEntity> SearchByRequest(IEnumerable<ProductEntity> products,
-                                                           SearchRequest request,
-                                                           Func<ProductEntity, object> sort)
-        {
-
-            if ((int)request.SortBy % 2 == 0)
-            {
-                return products.OrderBy(sort)
-                              .Skip(request.Page * request.PerPage)
-                              .Take(request.PerPage);
-            }
-
-            return products.OrderByDescending(sort)
-                              .Skip(request.Page * request.PerPage)
-                              .Take(request.PerPage);
-        }
-
-
 
         public async Task<ProductEntity> GetByName(string productName) => await _dbContext.ProductSet.SingleOrDefaultAsync(x => x.Name == productName);
 

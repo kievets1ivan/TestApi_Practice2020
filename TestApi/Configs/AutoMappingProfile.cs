@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using System;
 using TestApi.BL.DTOs;
 using TestApi.DAL.Entities;
-using TestApi.DAL.Enums;
 
 namespace TestApi
 {

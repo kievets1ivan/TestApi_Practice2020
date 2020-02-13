@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using TestApi.DAL.Enums;
 
-namespace TestApi.DAL.Entities
+namespace TestApi.BL.DTOs
 {
-    public class SearchRequest
+    public class SearchRequestDTO
     {
         [Required(ErrorMessage = "Fill in field 'Page', please", AllowEmptyStrings = false)]
         public int Page { get; set; }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TestApi.DAL.Entities;
+using TestApi.DAL.Enums;
 
 namespace TestApi.DAL.Storages.Interfaces
 {
@@ -16,6 +18,7 @@ namespace TestApi.DAL.Storages.Interfaces
         Task<ProductEntity> GetByName(string productName);
         int GetQuantityById(int productId);
         Task<bool> IsValidName(ProductEntity product);
-        SearchResponse GetLazy(SearchRequest request);
+        IOrderedEnumerable<ProductEntity> Sort(SortByColumn sortBy, Func<ProductEntity, object> sort);
+        int Count();
     }
 }

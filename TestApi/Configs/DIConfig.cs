@@ -15,9 +15,9 @@ namespace TestApi
             services.AddTransient<IProductStorage, ProductStorage>();
             services.AddTransient<IProductTransactionService, ProductTransactionService>();
             services.AddTransient<IProductTransactionStorage, ProductTransactionStorage>();
+            services.AddTransient<IDbTransactionService, DbTransactionService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserStorage, UserStorage>();
-
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }

@@ -6,7 +6,6 @@ using TestApi.BL.DTOs;
 using TestApi.BL.Services.Interfaces;
 using TestApi.BL.Exceptions;
 using System;
-using TestApi.DAL.Entities;
 
 namespace TestApi.Controllers
 {
@@ -67,9 +66,8 @@ namespace TestApi.Controllers
         }
 
         [HttpPost("lazy")]
-        public IActionResult GetLazy([FromBody] SearchRequest request)
+        public IActionResult GetLazy([FromBody] SearchRequestDTO request)
         {
-
             return Ok(_productService.GetLazy(request));
         }
     }
