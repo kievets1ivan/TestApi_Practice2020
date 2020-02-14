@@ -8,6 +8,7 @@ using TestApi.BL.Services.Interfaces;
 using TestApi.DAL.Entities;
 using TestApi.DAL.Enums;
 using TestApi.DAL.Storages.Interfaces;
+using System;
 
 namespace TestApi.BL.Services
 {
@@ -54,39 +55,38 @@ namespace TestApi.BL.Services
 
         public SearchResponseDTO GetLazy(SearchRequestDTO request)
         {
-            var response = new SearchResponseDTO();
-
-            response.TotalCount = _productStorage.Count();
+            var response = new SearchResponseDTO
+            {
+                TotalCount = _productStorage.Count()
+            };
 
             switch (request.SortBy)
             {
                 case SortByColumn.NameASC:
                 case SortByColumn.NameDESC:
-                    response.Products = _mapper.Map<IEnumerable<ProductOutcomeDTO>>(
-                                        _productStorage.Sort(request.SortBy, x => x.Name)
-                                                       .Skip(request.Page * request.PerPage)
-                                                       .Take(request.PerPage));
+                    response.Products = SortedProducts(request, x => x.Name);
                     break;
 
                 case SortByColumn.PriceASC:
                 case SortByColumn.PriceDESC:
-                    response.Products = _mapper.Map<IEnumerable<ProductOutcomeDTO>>(
-                                        _productStorage.Sort(request.SortBy, x => x.Price)
-                                                       .Skip(request.Page * request.PerPage)
-                                                       .Take(request.PerPage));
+                    response.Products = SortedProducts(request, x => x.Price);
                     break;
 
                 case SortByColumn.QuantityASC:
                 case SortByColumn.QuantityDESC:
-                    response.Products = _mapper.Map<IEnumerable<ProductOutcomeDTO>>(
-                                        _productStorage.Sort(request.SortBy, x => x.Quantity)
-                                                       .Skip(request.Page * request.PerPage)
-                                                       .Take(request.PerPage));
+                    response.Products = SortedProducts(request, x => x.Quantity);
                     break;
             }
 
             return response;
         }
 
+        private IEnumerable<ProductOutcomeDTO> SortedProducts(SearchRequestDTO request, Func<ProductEntity, object> sort)
+        {
+            return _mapper.Map<IEnumerable<ProductOutcomeDTO>>(
+                                        _productStorage.Sort(request.SortBy, sort)
+                                                       .Skip(request.Page * request.PerPage)
+                                                       .Take(request.PerPage));
+        }
     }
 }

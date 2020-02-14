@@ -17,7 +17,7 @@ namespace TestApi.BL.Services
         private readonly IProductTransactionStorage _productTransactionStorage;
         private readonly IMapper _mapper;
         private readonly IUserStorage _userStorage;
-        private readonly IDbTransactionService _transactionService;
+        private readonly IDbTransactionService _dbTransactionService;
 
 
         public ProductTransactionService(IProductStorage productStorage,
@@ -30,7 +30,7 @@ namespace TestApi.BL.Services
             _productTransactionStorage = productTransactionStorage;
             _mapper = mapper;
             _userStorage = userStorage;
-            _transactionService = transactionService;
+            _dbTransactionService = transactionService;
         }
 
         public IEnumerable<TransactionOutcomeDTO> GetTransactions(int productId)
@@ -47,28 +47,32 @@ namespace TestApi.BL.Services
 
             var transaction = BuildUpTransaction(productId, transactionDTO);
 
+            await SaveProductTransaction(product, transaction);
+            
+            return GetTransactions(product.Id);
+        }
 
-            _transactionService.BeginTransaction();
+        private async Task SaveProductTransaction(ProductEntity product, TransactionEntity transaction)
+        {
+            _dbTransactionService.BeginTransaction();
             try
             {
                 await _productTransactionStorage.AddTransaction(transaction);
 
                 await ChangeProductQuantityByTransaction(product, transaction);
 
-                _transactionService.Commit();
+                _dbTransactionService.Commit();
 
-            }catch(Exception)
+            }
+            catch (Exception)
             {
-                _transactionService.RollBack();
+                _dbTransactionService.RollBack();
                 throw;
             }
             finally
             {
-                _transactionService.Dispose();
+                _dbTransactionService.Dispose();
             }
-
-            
-            return GetTransactions(product.Id);
         }
 
         private void ValidateTransaction(int productQuantity, TransactionDTO transactionDTO)

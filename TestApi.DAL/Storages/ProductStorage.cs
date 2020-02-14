@@ -65,20 +65,9 @@ namespace TestApi.DAL.Storages
 
         public async Task<bool> IsValidName(ProductEntity product)
         {
-            if(product.Id == 0)
-            {
-                if (await GetByName(product.Name) != null)
-                {
-                    return false;
-                }
-                return true;
-            }
+            var existingProduct = await _dbContext.ProductSet.FirstOrDefaultAsync(x => x.Name == product.Name && x.Id != product.Id);
 
-            if (await _dbContext.ProductSet.FirstOrDefaultAsync(x => x.Name == product.Name && x.Id != product.Id) != null)
-            {
-                return false;
-            }
-            return true;
+            return existingProduct == null;
         }
     }
 }

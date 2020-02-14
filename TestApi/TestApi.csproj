@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>TestApi</AssemblyName>
+    <RootNamespace>TestApi</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
