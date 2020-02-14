@@ -11,6 +11,7 @@
 *.sln.docstates
 bin/
 obj/
+*.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
